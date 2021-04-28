@@ -1,3 +1,5 @@
 public interface TreeNode {
-    void add(Body b);
+    boolean add(Body b);
+
+    //Methode, die hilft zu wissen, in welchem Octant des Parent wir sind
 }

@@ -18,4 +18,8 @@ public class Octant {
     public boolean contains(Vector3 v){
         return false;
     }
+
+    //equals methode, der schaut, ob zwei octanten gleich sind
+
+
 }

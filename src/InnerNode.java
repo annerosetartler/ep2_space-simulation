@@ -6,8 +6,15 @@ public class InnerNode implements TreeNode {
 
     public InnerNode(){}
 
-    public void add(Body b){
-        //if nwTop.contains? nwTop.add;
+    public boolean add(Body b){
+        //if nwTop.contains? {
+        //if (nwTop == null){ nwTop = new LeafNode(b, nwTopOctant}
+        //else{ nwTop.add(b);
+        //}
+        //.....
+
+        //else nur return true?
+        return false;
     }
 
     public Vector3 getCenter(){
@@ -21,4 +28,8 @@ public class InnerNode implements TreeNode {
     public double getLength(){
         return octant.getLength();
     }
+
+    //Methode, die hilft zu wissen, in welchem Octant des Parent wir sind
+
+
 }

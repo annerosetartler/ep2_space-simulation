@@ -3,8 +3,8 @@ public class Octree {
     private TreeNode root;
 
     //adds a body to the octree
-    public void add(Body b){
-        if(!octant.contains(b)){
+    public boolean add(Body b){
+        /*if(!octant.contains(b)){
             return;
         }
         if(root == null){
@@ -17,6 +17,25 @@ public class Octree {
         }else{
             root.add(b);
         }
+         */
+
+
+        if(!octant.contains(b)){
+            return true;
+        }
+        if(root == null){
+            root = new LeaveNode(b,octant);
+            return true;
+        }
+        boolean bool = root.add(b);
+        if (!bool){
+            Body recovery = root.getBody();
+            root = new InnerNode();
+            root.add(recovery);
+
+        }
+        root.add(b);
+        return true;
     }
 
 }
