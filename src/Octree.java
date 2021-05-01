@@ -1,38 +1,28 @@
 public class Octree {
 
+    private String name;
     private TreeNode root;
+    private Octant octant;
+
+    public Octree(String n,double xmin, double xmax, double ymin, double ymax, double zmin, double zmax){
+        name = n;
+        octant = new Octant(xmin,xmax,ymin,ymax,zmin,zmax);
+    }
 
     //adds a body to the octree
     public boolean add(Body b){
-        /*if(!octant.contains(b)){
-            return;
+        if(!octant.contains(b.getMassCenter())){
+            return false;
         }
         if(root == null){
-            root = new LeaveNode(b,octant);
-        }else if(root.getClass() == LeaveNode.class){
-            Body temp = root.getBody();
-            root = new InnerNode(); //Gewicht plus Schwerpunkt von b und temp
-            root.add(temp);
-            root.add(b);
-        }else{
-            root.add(b);
-        }
-         */
-
-
-        if(!octant.contains(b)){
-            return true;
-        }
-        if(root == null){
-            root = new LeaveNode(b,octant);
+            root = new LeafNode(octant,b,null,-1);
             return true;
         }
         boolean bool = root.add(b);
         if (!bool){
             Body recovery = root.getBody();
-            root = new InnerNode();
+            root = new InnerNode(octant,null);
             root.add(recovery);
-
         }
         root.add(b);
         return true;

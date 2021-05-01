@@ -49,6 +49,11 @@ public class Vector3 {
         z /= length;
     }
 
+    // Returns true if vector-coordinates are in octant
+    public boolean isInOctant(double xmin, double xmax, double ymin, double ymax, double zmin, double zmax) {
+        return (xmin <= x && x <= xmax) && (ymin <= y && y <= ymax) && (zmin <= z && z <= zmax);
+    }
+
     // Draws a filled circle with a specified radius centered at the (x,y) coordinates of this vector
     // in the existing StdDraw canvas. The z-coordinate is not used.
     public void drawAsDot(double radius, Color color) {
