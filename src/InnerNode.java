@@ -51,8 +51,8 @@ public class InnerNode implements TreeNode {
         return child[i];
     }
 
-    public boolean add(Body b){
-        if(b == null){
+    public boolean add(Body b) {
+        if (b == null) {
             return false;
         }
         Octant[] oct = octant.childOctants();
@@ -60,12 +60,13 @@ public class InnerNode implements TreeNode {
         double m = b.getMass();
         MassCenter = MassCenter.times(mass);
         mass += m;
-        MassCenter = (MassCenter.plus(position.times(m))).times(1/mass);
+        MassCenter = (MassCenter.plus(position.times(m))).times(1 / mass);
+
         boolean flag = true;
         for (int i = 0; i < oct.length && flag; i++) {
             if (oct[i].contains(position)) {
                 if (child[i] == null) {
-                    child[i] = new LeafNode(oct[0], b, this, i);
+                    child[i] = new LeafNode(oct[i], b, this, i);
                     return true;
                 } else {
                     child[i].add(b);
@@ -74,7 +75,7 @@ public class InnerNode implements TreeNode {
             }
         }
         return true;
-        //falls Schleife nicht funktioniert:
+        }
         /*
         if(oct[0].contains(position)){
             if(child[0] == null){
@@ -135,6 +136,13 @@ public class InnerNode implements TreeNode {
         }else{
             return true;
         }
-        */
+        return true;
     }
+
+    public String toString(){
+        return octant.toString();
+    }
+    */
+
+
 }

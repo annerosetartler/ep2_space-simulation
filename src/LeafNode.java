@@ -32,7 +32,10 @@ public class LeafNode implements TreeNode {
         parent.setChild(childID,new InnerNode(octant,parent));
         parent.getChild(childID).add(recovery);
         parent.getChild(childID).add(b);
-        parent = null;
         return true;
+    }
+
+    public String toString(){
+        return body.toString();
     }
 }

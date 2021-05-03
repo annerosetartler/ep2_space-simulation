@@ -23,8 +23,8 @@ public class Octree {
             Body recovery = root.getBody();
             root = new InnerNode(octant,null);
             root.add(recovery);
+            root.add(b);
         }
-        root.add(b);
         return true;
     }
 

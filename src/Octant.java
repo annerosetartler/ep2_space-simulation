@@ -32,8 +32,12 @@ public class Octant {
         octants[3] = new Octant(middle,xmax,ymin,middle,middle,zmax);//swTop
         octants[4] = new Octant(xmin,middle,middle,ymax,zmin,middle);//nwBottom
         octants[5] = new Octant(middle,xmax,middle,ymax,zmin,middle);//noBottom
-        octants[6] = new Octant(xmin,middle,ymin,middle,zmin,middle);//soBottom
-        octants[7] = new Octant(middle,xmax,ymin,middle,zmin,middle);//swBottom
+        octants[6] = new Octant(xmin,middle,ymin,middle,zmin,middle);//swBottom
+        octants[7] = new Octant(middle,xmax,ymin,middle,zmin,middle);//soBottom
         return octants;
+    }
+
+    public String toString(){
+        return "Octant: " + xmin +", "+ xmax +", "+  ymin +", "+  ymax +", "+  zmin +", "+ zmax;
     }
 }
