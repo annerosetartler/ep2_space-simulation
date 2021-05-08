@@ -26,6 +26,11 @@ public class LeafNode implements TreeNode {
         return body;
     }
 
+    @Override
+    public Vector3 calculate(Body body) {
+        return body.gravitationalForce(this.body);
+    }
+
     public boolean add(Body b){
         if (parent == null){
             return false;

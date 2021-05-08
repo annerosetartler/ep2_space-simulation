@@ -28,6 +28,13 @@ public class Octree {
         return true;
     }
 
+    public void calculate(Body body){
+        if (root == null || body == null){
+            return;
+        }
+        body.setForce(root.calculate(body));
+    }
+
     public void reset(){
         root = null;
     }

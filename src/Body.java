@@ -16,6 +16,7 @@ public class Body {
         this.position = position;
         this.currentMovement = currentMovement;
         this.color = color;
+        this.force = new Vector3();
     }
 
     public Body(double mass, double radius, Vector3 position, Vector3 currentMovement){
@@ -24,6 +25,7 @@ public class Body {
         this.position = position;
         this.currentMovement = currentMovement;
         this.color = StdDraw.WHITE;
+        this.force = new Vector3();
     }
 
     public void setForce(Vector3 f){
@@ -64,7 +66,21 @@ public class Body {
         Vector3 direction = body.position.minus(position);
         double r = this.distanceTo(body);
         direction.normalize();
+        if (r == 0){
+            return new Vector3();
+        }
         double force = Simulation.G * mass * body.mass/(r * r);
+        return direction.times(force);
+    }
+
+    public Vector3 gravitationalForce(Vector3 position, double mass){
+        Vector3 direction = position.minus(this.position);
+        double r = this.position.distanceTo(position);
+        direction.normalize();
+        if (r == 0){
+            return new Vector3();
+        }
+        double force = Simulation.G * this.mass * mass/(r * r);
         return direction.times(force);
     }
 
@@ -99,6 +115,7 @@ public class Body {
     // (use a conversion based on the logarithm as in 'Simulation.java').
     // Hint: use the method drawAsDot implemented in Vector3 for this
     public void draw() {
-        position.drawAsDot(1e9*Math.log10(radius),color);
+       // position.drawAsDot(1e9*Math.log10(radius),color);
+        position.drawAsDot(radius, color);
     }
 }

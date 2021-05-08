@@ -11,6 +11,12 @@ public class Vector3 {
         this.z = z;
     }
 
+    public Vector3(double windowSize){
+        x = (Math.random()*windowSize*2)-windowSize;
+        y = (Math.random()*windowSize*2)-windowSize;
+        z = (Math.random()*windowSize*2)-windowSize;
+    }
+
     public Vector3(){}
 
     // Returns the sum of this vector and vector 'v'.

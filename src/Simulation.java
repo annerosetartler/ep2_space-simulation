@@ -1,27 +1,80 @@
+import java.awt.*;
+
 public class Simulation {
     // gravitational constant
-    public static final double G = 6.6743e-11;
+    public static final double G = 1.2;
+            //6.6743e-11;
+
+    private static final int numberOfBodies = 10000;
+    private static final double windowSize = 500;
 
     //T
     public static final double T = 1;
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
 
+    public static Body[] bodyArray = new Body[numberOfBodies];
+
 
     public static void main(String[] args) {
-        Body sun = new Body("Sol",1.989e30,696340e3,new Vector3(0,0,0),new Vector3(0,0,0),StdDraw.YELLOW);
-        Body earth = new Body("Earth",5.972e24,6371e3,new Vector3(-5,-5,-5),new Vector3(-10308.53,-28169.38,0),StdDraw.BLUE);
-        Body mercury = new Body("Mercury",3.301e23,2440e3,new Vector3(5,5,5),new Vector3(-17117.83,-46297.48,-1925.57),StdDraw.GRAY);
-        Body venus = new Body("Venus",4.86747e24,6052e3,new Vector3(-1,-1,-1),new Vector3(-34446.02,-5567.47,2181.10),StdDraw.PINK);
-        Body mars = new Body("Mars",6.41712e23,3390e3,new Vector3(1,1,1),new Vector3(20651.98,-10186.67,-2302.79),StdDraw.RED);
-        Octree test = new Octree("test1",-10,10,-10,10,-10,10);
 
-        test.add(sun);
-        test.add(earth);
-        test.add(mercury);
-        test.add(venus);
-        test.add(mars);
+        Octree test = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
+        //setup schleife
+        for (int i = 0; i < bodyArray.length; i++) {
+            bodyArray[i] = new Body("b" + i, (Math.random()*(3-1))+1, (Math.random()*(2-1))+1, new Vector3(windowSize), new Vector3(), StdDraw.WHITE );
+        }
+
+        setUp();
+
+
+
+        double seconds = 0;
+
+        while (true){
+            seconds++;
+            test.reset();
+
+
+
+            //tree aufbauen
+            for (int i = 0; i < bodyArray.length; i++) {
+                test.add(bodyArray[i]);
+            }
+
+            //kräfte berechnen für alle bodies
+            for (int i = 0; i < bodyArray.length; i++) {
+                test.calculate(bodyArray[i]);
+            }
+
+            //bodies bewegen
+            for (int i = 0; i < bodyArray.length; i++) {
+                bodyArray[i].move();
+            }
+
+            //alle paar sekunden bodies zeichnen inkl. StdDraw.clear(); Body.draw(); und StdDraw.show(); /////bodyArray[i].draw();
+
+            StdDraw.clear(StdDraw.BLACK);
+            for (int i = 0; i < bodyArray.length; i++) {
+                bodyArray[i].draw();
+            }
+            StdDraw.show();
+        }
+
+
+
+
+        //array traversieren und für jeden Body berechnungsmethode aufrufen:
+        // test.calculate(body);
+
+    }
+
+    public static void setUp(){
+        StdDraw.setCanvasSize((int)Math.ceil(windowSize*2), (int)Math.ceil(windowSize*2));
+        StdDraw.setXscale(-(int)Math.ceil(windowSize), (int)Math.ceil(windowSize));
+        StdDraw.setYscale(-(int)Math.ceil(windowSize), (int)Math.ceil(windowSize));
+        StdDraw.enableDoubleBuffering();
+        StdDraw.clear(Color.black);
     }
 
 }

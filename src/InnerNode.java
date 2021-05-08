@@ -39,6 +39,26 @@ public class InnerNode implements TreeNode {
         return null;
     }
 
+    @Override
+    public Vector3 calculate(Body body) {
+
+        if ((MassCenter.distanceTo(body.getMassCenter()))/length > (Simulation.T == 0 ? 0 : 1/Simulation.T)) {
+            //entweder gib body.gravitationalForce(this inner node);
+            return body.gravitationalForce(MassCenter, mass); //oder plus?
+        }
+
+        Vector3 calculateVector = new Vector3();
+            //oder gib jeweils body.... für jedes kind (mit + berechnen)
+
+        for (int i = 0; i < child.length; i++) {
+            if (child[i] != null) {
+                calculateVector = calculateVector.plus(child[i].calculate(body));
+            }
+        }
+
+        return calculateVector;
+    }
+
     public InnerNode parent(){
         return parent;
     }
