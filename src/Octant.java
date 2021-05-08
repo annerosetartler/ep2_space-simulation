@@ -28,8 +28,8 @@ public class Octant {
         double middle = (xmin + xmax)/2.0;
         octants[0] = new Octant(xmin,middle,middle,ymax,middle,zmax);//nwTop
         octants[1] = new Octant(middle,xmax,middle,ymax,middle,zmax);//noTop
-        octants[2] = new Octant(xmin,middle,ymin,middle,middle,zmax);//soTop
-        octants[3] = new Octant(middle,xmax,ymin,middle,middle,zmax);//swTop
+        octants[2] = new Octant(xmin,middle,ymin,middle,middle,zmax);//swTop
+        octants[3] = new Octant(middle,xmax,ymin,middle,middle,zmax);//soTop
         octants[4] = new Octant(xmin,middle,middle,ymax,zmin,middle);//nwBottom
         octants[5] = new Octant(middle,xmax,middle,ymax,zmin,middle);//noBottom
         octants[6] = new Octant(xmin,middle,ymin,middle,zmin,middle);//swBottom

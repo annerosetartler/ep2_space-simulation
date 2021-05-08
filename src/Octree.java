@@ -28,4 +28,8 @@ public class Octree {
         return true;
     }
 
+    public void reset(){
+        root = null;
+    }
+
 }

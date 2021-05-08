@@ -4,12 +4,14 @@ public class LeafNode implements TreeNode {
     private InnerNode parent;
     private Octant octant;
     private int childID;//to know which child this leaf is to its parent, ersparen uns so noch einen Vergleich in Octant
+    private double length;
 
     public LeafNode(Octant o, Body b, InnerNode p, int i){
         octant = o;
         body = b;
         parent = p;
         childID = i;
+        length = o.getLength();
     }
 
     public Vector3 getMassCenter(){

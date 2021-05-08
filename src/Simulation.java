@@ -2,8 +2,11 @@ public class Simulation {
     // gravitational constant
     public static final double G = 6.6743e-11;
 
+    //T
+    public static final double T = 1;
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
+
 
     public static void main(String[] args) {
         Body sun = new Body("Sol",1.989e30,696340e3,new Vector3(0,0,0),new Vector3(0,0,0),StdDraw.YELLOW);

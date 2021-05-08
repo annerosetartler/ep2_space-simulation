@@ -138,11 +138,11 @@ public class InnerNode implements TreeNode {
         }
         return true;
     }
-
+*/
     public String toString(){
         return octant.toString();
     }
-    */
+
 
 
 }
