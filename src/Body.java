@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 public class Body {
     private String name;
@@ -7,7 +8,8 @@ public class Body {
     private Vector3 position; // position of the center.
     private Vector3 currentMovement;
     private Color color; // for drawing the body.
-    private Vector3 force;
+    private Vector3 force; //calculated force vector
+    private static final Color[] colorArray = {StdDraw.WHITE, StdDraw.BLUE, StdDraw.GREEN, StdDraw.PRINCETON_ORANGE, StdDraw.BOOK_LIGHT_BLUE, StdDraw.BOOK_RED};
 
     public Body(String name, double mass, double radius, Vector3 position, Vector3 currentMovement, Color color){
         this.name = name;
@@ -24,10 +26,11 @@ public class Body {
         this.radius = radius;
         this.position = position;
         this.currentMovement = currentMovement;
-        this.color = StdDraw.WHITE;
+        this.color = colorArray[(new Random()).nextInt(colorArray.length)];
         this.force = new Vector3();
     }
 
+    // Sets force
     public void setForce(Vector3 f){
         force = f;
     }
@@ -73,6 +76,8 @@ public class Body {
         return direction.times(force);
     }
 
+    //Calculates the gravitational force excerted on a body or a conglomerate of bodies
+    // (represented by the position and mass) on this body
     public Vector3 gravitationalForce(Vector3 position, double mass){
         Vector3 direction = position.minus(this.position);
         double r = this.position.distanceTo(position);
@@ -115,7 +120,7 @@ public class Body {
     // (use a conversion based on the logarithm as in 'Simulation.java').
     // Hint: use the method drawAsDot implemented in Vector3 for this
     public void draw() {
-       // position.drawAsDot(1e9*Math.log10(radius),color);
+        //position.drawAsDot(1e9*Math.log10(radius),color);
         position.drawAsDot(radius, color);
     }
 }

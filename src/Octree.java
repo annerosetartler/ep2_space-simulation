@@ -28,6 +28,7 @@ public class Octree {
         return true;
     }
 
+    // Calculates all forces on body and subsequently sets the force in body
     public void calculate(Body body){
         if (root == null || body == null){
             return;
@@ -35,6 +36,7 @@ public class Octree {
         body.setForce(root.calculate(body));
     }
 
+    // Resets Octree by removing the root reference
     public void reset(){
         root = null;
     }

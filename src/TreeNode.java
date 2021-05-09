@@ -1,9 +1,12 @@
 public interface TreeNode {
+
+    // Adds a body in the Octree
     boolean add(Body b);
 
+    // Returns the body of this TreeNode
     Body getBody();
 
+    // Calculates forces excerted on body
     Vector3 calculate(Body body);
 
-    //Methode, die hilft zu wissen, in welchem Octant des Parent wir sind
 }

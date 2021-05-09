@@ -22,15 +22,19 @@ public class LeafNode implements TreeNode {
         return body.getMass();
     }
 
+    //returns this body
     public Body getBody(){
         return body;
     }
 
+    //calculates and returns the gravitational force on body excerted by this.body
     @Override
     public Vector3 calculate(Body body) {
         return body.gravitationalForce(this.body);
     }
 
+    //adds body b by storing the body in this leave node, then adding a inner node at the place of this LeafNode and
+    //subsiquently adding the saved body and body b into the tree again
     public boolean add(Body b){
         if (parent == null){
             return false;
@@ -42,6 +46,7 @@ public class LeafNode implements TreeNode {
         return true;
     }
 
+    //returns the name of this Body
     public String toString(){
         return body.toString();
     }

@@ -11,10 +11,12 @@ public class Octant {
         this.zmax = zmax;
     }
 
+    //returns length of this Octant
     public double getLength(){
         return Math.abs(xmax - xmin);
     }
 
+    //checks if the coordinates represented by Vector3 v are inside this Octant
     public boolean contains(Vector3 v){
         if (v == null){
             return false;
@@ -23,6 +25,7 @@ public class Octant {
         }
     }
 
+    //generates all childOctants with the corresponding coordinates
     public Octant[] childOctants(){
         Octant[] octants = new Octant[8];
         double middle = (xmin + xmax)/2.0;
@@ -37,6 +40,8 @@ public class Octant {
         return octants;
     }
 
+    // Returns a readable representation of the information of this Octant:
+    //Octant: xmin, xmax, ymin, ymax, zmin, zmax
     public String toString(){
         return "Octant: " + xmin +", "+ xmax +", "+  ymin +", "+  ymax +", "+  zmin +", "+ zmax;
     }
