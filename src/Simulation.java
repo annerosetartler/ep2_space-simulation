@@ -9,9 +9,10 @@ public class Simulation {
     private static final double windowSize = 500;
     private static int minMass = 100;
     private static Random random = new Random();
+    private static final double spreader = 0.8;//a value between 0 and 1 (not 0)
 
     //T
-    public static final double T = 1;
+    public static final double T = 0;
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
 
@@ -92,17 +93,17 @@ public class Simulation {
         double xPeak = (random.nextInt(3)-1) * windowSize/4.0;
         double yPeak = (random.nextInt(3)-1) * windowSize/4.0;
         double zPeak = (random.nextInt(3)-1) * windowSize/4.0;
-        double x = random.nextGaussian() * (windowSize/4) * T;
-        double y = random.nextGaussian() * (windowSize/4) * T;
-        double z = random.nextGaussian() * (windowSize/4) * T;
+        double x = random.nextGaussian() * (windowSize/4) * spreader;
+        double y = random.nextGaussian() * (windowSize/4) * spreader;
+        double z = random.nextGaussian() * (windowSize/4) * spreader;
         return new Vector3(x+xPeak, y+yPeak,z+zPeak);
     }
 
     //generates more star-positions in the inner part of the window
     private static Vector3 generateOneClusterPosition(){
-        double x = random.nextGaussian() * (windowSize/2) * T;
-        double y = random.nextGaussian() * (windowSize/2) * T;
-        double z = random.nextGaussian() * (windowSize/2) * T;
+        double x = random.nextGaussian() * (windowSize/2) * spreader;
+        double y = random.nextGaussian() * (windowSize/2) * spreader;
+        double z = random.nextGaussian() * (windowSize/2) * spreader;
         return new Vector3(x, y,z);
     }
 
