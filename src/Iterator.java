@@ -1,17 +1,17 @@
 public class Iterator implements java.util.Iterator<Body> {
-    TreeNode node;
+        TreeNode node;
 
-    public Iterator(TreeNode node){
-        this.node = node;
-    }
+        public Iterator(TreeNode node){
+            this.node = node;
+        }
 
-    @Override
-    public boolean hasNext() {
-        return false;
-    }
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
 
-    @Override
-    public Body next() {
-        return node.getBody();
-    }
+        @Override
+        public Body next() {
+            return node.getBody();
+        }
 }
