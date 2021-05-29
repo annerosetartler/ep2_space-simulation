@@ -1,18 +1,20 @@
 import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Simulation {
     // gravitational constant
     public static final double G = 6.6743e-11;
 
-    private static final int numberOfBodies = 10000;
+    private static int numberOfBodies = 10000;
     private static final double windowSize = 500;
     private static int minMass = 100;
     private static Random random = new Random();
     private static final double spreader = 0.8;//a value between 0 and 1 (not 0)
 
     //T
-    public static final double T = 0;
+    public static double T = 0;
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
 
@@ -20,6 +22,47 @@ public class Simulation {
 
 
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the number of bodies as integer: ");
+        boolean flag = true;
+        while (flag){
+            if(input.hasNextInt()){
+                numberOfBodies = input.nextInt();
+                if(numberOfBodies >= 5 && numberOfBodies <= 11000){
+                    flag = false;
+                    break;
+                }else{
+                    System.out.println("Please choose a number from 5 to 11000.");
+                }
+            }else {
+                String typedIn = input.next();
+                System.out.println("Wrong Input type: " + typedIn);
+            }
+        }
+        System.out.println("Please enter T as double: ");
+        flag = true;
+        while (flag){
+            if(input.hasNext()){
+                if (input.hasNextDouble()) {
+                    T = input.nextDouble();
+                    if(T >= 0.0 && T <= 1.0){
+                        flag = false;
+                        input.close();
+                        break;
+                    }else{
+                        System.out.println("T has to be in [0,1].");
+                    }
+                } else {
+                    String typedIn = input.next();
+                    System.out.println("Wrong Input type: " + typedIn);
+                }
+            }
+        }
+        System.out.println(starSlogan());
+        System.out.println("number of bodies: " + numberOfBodies);
+        System.out.println("T: " + T);
+        bodyArray = new Body[numberOfBodies];
+
         Octree octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
         setUp();
@@ -42,10 +85,10 @@ public class Simulation {
     }
 
     //sets up StdDraw window and star starting points
-    public static void setUp(){                                 //nochmal window und window size ansehen, ob man da noch was schöner machen kann
+    public static void setUp(){
         StdDraw.setCanvasSize((int)Math.ceil(windowSize*2), (int)Math.ceil(windowSize*2));
-        StdDraw.setXscale(-(int)Math.ceil(windowSize/2), (int)Math.ceil(windowSize/2));
-        StdDraw.setYscale(-(int)Math.ceil(windowSize/2), (int)Math.ceil(windowSize/2));
+        StdDraw.setXscale(-windowSize,windowSize);
+        StdDraw.setYscale(-windowSize,windowSize);
         StdDraw.enableDoubleBuffering();
         StdDraw.clear(Color.black);
 
@@ -57,25 +100,16 @@ public class Simulation {
     public static void createStars(){
         for (int i = 0; i < bodyArray.length; i++) { //10 stars space for the "big stars" fraction
             double randomNumber = Math.random();
-            bodyArray[i] = new Body((1e4 * randomNumber * windowSize + minMass), randomNumber * (1.0/900) * windowSize, randomizeClusters(), new Vector3()); // no start movement right now
+            bodyArray[i] = new Body((1e4 * randomNumber * windowSize + minMass), randomNumber * (1.0/800) * windowSize, randomizeClusters(), new Vector3()); // no start movement right now
         }
     }
 
     //adds big stars to make movement more interesting/less even (written over some already randomly created stars in array)
     public static void createBigStars(){
-        //bodyArray[9991] = new Body();
-
-        //black hole
-        bodyArray[9996] = new Body("BlackHole", 1e9 * 0.9 * windowSize, (1.0/1000) * windowSize, new Vector3(+windowSize/11,-windowSize/7.2,0),
-                new Vector3(), StdDraw.BLACK);
-
-        //...
-        bodyArray[9998] = new Body(1e9  * windowSize, (1.0/610) * windowSize,  new Vector3(-(windowSize/2)+(windowSize/15),-(windowSize/6),windowSize/11),
-                new Vector3(0.1, -0.5,-0.1));
-
-
-        bodyArray[9999] = new Body( "BigBody", 1e8 * 0.8 * windowSize, (1.0/400) * windowSize,
-                new Vector3(-windowSize/8,-(windowSize/4)+(windowSize/10),-(windowSize/6)), new Vector3(), StdDraw.BOOK_RED);
+        bodyArray[0] = new Body("AlphaCentauris",1e10  * windowSize,(1.0/300) * windowSize,new Vector3(0,(windowSize/3),0),new Vector3(-(windowSize/1000),-(windowSize/1000),0),StdDraw.WHITE);
+        bodyArray[1] = new Body("FancyStarName",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize/3),-(windowSize/5),0),new Vector3((windowSize/1000),-(windowSize/1000),0),StdDraw.PINK);
+        bodyArray[2] = new Body("BigNebula",1e10 * windowSize,(1.0/300) * windowSize,new Vector3((windowSize/3),-(windowSize/5),0),new Vector3(-(windowSize/1000),(windowSize/1000),0),StdDraw.YELLOW);
+        bodyArray[3] = new Body("DerGroßeWagen",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize-(windowSize/10)),-(windowSize-(windowSize/10)),0),new Vector3((windowSize/2000),(windowSize/2000),0),StdDraw.ORANGE);
     }
 
 
@@ -90,20 +124,20 @@ public class Simulation {
 
     //generates star-accumulations
     private static Vector3 generateMultiClusterPosition(){
-        double xPeak = (random.nextInt(3)-1) * windowSize/4.0;
-        double yPeak = (random.nextInt(3)-1) * windowSize/4.0;
-        double zPeak = (random.nextInt(3)-1) * windowSize/4.0;
-        double x = random.nextGaussian() * (windowSize/4) * spreader;
-        double y = random.nextGaussian() * (windowSize/4) * spreader;
-        double z = random.nextGaussian() * (windowSize/4) * spreader;
+        double xPeak = (random.nextInt(3)-1) * windowSize/2.0;
+        double yPeak = (random.nextInt(3)-1) * windowSize/2.0;
+        double zPeak = (random.nextInt(3)-1) * windowSize/2.0;
+        double x = random.nextGaussian() * (windowSize/2) * spreader;
+        double y = random.nextGaussian() * (windowSize/2) * spreader;
+        double z = random.nextGaussian() * (windowSize/2) * spreader;
         return new Vector3(x+xPeak, y+yPeak,z+zPeak);
     }
 
     //generates more star-positions in the inner part of the window
     private static Vector3 generateOneClusterPosition(){
-        double x = random.nextGaussian() * (windowSize/2) * spreader;
-        double y = random.nextGaussian() * (windowSize/2) * spreader;
-        double z = random.nextGaussian() * (windowSize/2) * spreader;
+        double x = random.nextGaussian() * windowSize * spreader;
+        double y = random.nextGaussian() * windowSize * spreader;
+        double z = random.nextGaussian() * windowSize * spreader;
         return new Vector3(x, y,z);
     }
 
@@ -135,6 +169,46 @@ public class Simulation {
             bodyArray[i].draw();
         }
         StdDraw.show();
+    }
+
+    public static String starSlogan(){
+        int rando = random.nextInt(10);
+        String slogan = "";
+        switch (rando){
+            case 0:
+                slogan = "Stars can't shine without darkness.";
+                break;
+            case 1:
+                slogan = "This night is sparkling...don't you let it go";
+                break;
+            case 2:
+                slogan = "Look up and get lost...";
+                break;
+            case 3:
+                slogan = "Nothing lasts forever but the earth and the sky.";
+                break;
+            case 4:
+                slogan = "Maybe we belong among the stars.";
+                break;
+            case 5:
+                slogan = "Mars is waiting to be reached...";
+                break;
+            case 6:
+                slogan = "Stars are not always visible, but they are always there.";
+                break;
+            case 7:
+                slogan = "Reach for the stars...you might become one.";
+                break;
+            case 8:
+                slogan = "Let's dance beneath the stars and forget the world...";
+                break;
+            case 9:
+                slogan = "The great kings of the past look down on us from the stars.";
+                break;
+            default:
+                slogan = "All systems are go!";
+        }
+        return slogan;
     }
 
 }
