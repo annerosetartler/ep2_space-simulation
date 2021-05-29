@@ -12,13 +12,14 @@ public class Simulation {
     private static int minMass = 100;
     private static Random random = new Random();
     private static final double spreader = 0.8;//a value between 0 and 1 (not 0)
-
+    private static final Color[] colorArray = {StdDraw.WHITE, StdDraw.BLUE, StdDraw.GREEN, StdDraw.PRINCETON_ORANGE, StdDraw.BOOK_LIGHT_BLUE, StdDraw.BOOK_RED};
+    private static int currentTextColor = 0;
+    private static int ticker = 0;
     //T
     public static double T = 0;
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
 
-    public static Body[] bodyArray = new Body[numberOfBodies];
     public static Octree octree;
 
     public static void main(String[] args) {
@@ -61,7 +62,6 @@ public class Simulation {
         System.out.println(starSlogan());
         System.out.println("number of bodies: " + numberOfBodies);
         System.out.println("T: " + T);
-        //bodyArray = new Body[numberOfBodies];
 
         octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
@@ -75,6 +75,9 @@ public class Simulation {
 
             drawSky();
 
+            buildTree();
+
+            ticker++;
         }
 
     }
@@ -150,10 +153,12 @@ public class Simulation {
     }
 
     //adds all bodies with updated movement in the octree
-    public static void buildTree(Octree oct){
-        for (int i = 0; i < bodyArray.length; i++) {
-            oct.add(bodyArray[i]);
+    public static void buildTree(){
+        Octree octNew = new Octree("nextRound",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
+        for (Body body : octree) {
+            octNew.add(body);
         }
+        octree = octNew;
     }
 
     //draws the new sky-formation
@@ -162,6 +167,14 @@ public class Simulation {
         for (Body body: octree) {
             body.draw();
         }
+        if(ticker % 40 == 0){
+            currentTextColor++;
+            currentTextColor %= colorArray.length;
+        }
+        StdDraw.setPenColor(colorArray[currentTextColor]);
+        Font font = new Font("arial",Font.ITALIC,20);
+        StdDraw.setFont(font);
+        StdDraw.text(-180,400,"SHOOT FOR THE MOON...YOU MIGHT DRAW() THE SKY");
         StdDraw.show();
     }
 
