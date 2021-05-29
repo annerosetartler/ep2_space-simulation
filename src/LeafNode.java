@@ -50,4 +50,33 @@ public class LeafNode implements TreeNode {
     public String toString(){
         return body.toString();
     }
+
+    @Override
+    public BodyIterator iterator() {
+        return new LeafIterator(body);
+    }
+
+    private class LeafIterator implements BodyIterator{
+        private Body b;
+        private boolean flag;
+
+        public LeafIterator(Body body) {
+            b = body;
+            flag = true;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return flag;
+        }
+
+        public Body next(){
+            if(flag){
+                flag = false;
+                return b;
+            }else{
+                return null;
+            }
+        }
+    }
 }
