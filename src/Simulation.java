@@ -19,7 +19,7 @@ public class Simulation {
     public static final double AU = 150e9;
 
     public static Body[] bodyArray = new Body[numberOfBodies];
-
+    public static Octree octree;
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -61,20 +61,15 @@ public class Simulation {
         System.out.println(starSlogan());
         System.out.println("number of bodies: " + numberOfBodies);
         System.out.println("T: " + T);
-        bodyArray = new Body[numberOfBodies];
+        //bodyArray = new Body[numberOfBodies];
 
-        Octree octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
+        octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
         setUp();
 
-
         while (true){
 
-            octree.reset();
-
-            buildTree(octree);
-
-            calcForces(octree);
+            calcForces();
 
             moveBodies();
 
@@ -98,20 +93,19 @@ public class Simulation {
 
     //creates numberOfBodies stars
     public static void createStars(){
-        for (int i = 0; i < bodyArray.length; i++) { //10 stars space for the "big stars" fraction
+        for (int i = 0; i < numberOfBodies; i++) {
             double randomNumber = Math.random();
-            bodyArray[i] = new Body((1e4 * randomNumber * windowSize + minMass), randomNumber * (1.0/800) * windowSize, randomizeClusters(), new Vector3()); // no start movement right now
+            octree.add(new Body((1e4 * randomNumber * windowSize + minMass), randomNumber * (1.0/700) * windowSize, randomizeClusters(), new Vector3())); // no start movement right now
         }
     }
 
     //adds big stars to make movement more interesting/less even (written over some already randomly created stars in array)
     public static void createBigStars(){
-        bodyArray[0] = new Body("AlphaCentauris",1e10  * windowSize,(1.0/300) * windowSize,new Vector3(0,(windowSize/3),0),new Vector3(-(windowSize/1000),-(windowSize/1000),0),StdDraw.WHITE);
-        bodyArray[1] = new Body("FancyStarName",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize/3),-(windowSize/5),0),new Vector3((windowSize/1000),-(windowSize/1000),0),StdDraw.PINK);
-        bodyArray[2] = new Body("BigNebula",1e10 * windowSize,(1.0/300) * windowSize,new Vector3((windowSize/3),-(windowSize/5),0),new Vector3(-(windowSize/1000),(windowSize/1000),0),StdDraw.YELLOW);
-        bodyArray[3] = new Body("DerGroßeWagen",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize-(windowSize/10)),-(windowSize-(windowSize/10)),0),new Vector3((windowSize/2000),(windowSize/2000),0),StdDraw.ORANGE);
+        octree.add(new Body("AlphaCentauris",1e10  * windowSize,(1.0/300) * windowSize,new Vector3(0,(windowSize/3),0),new Vector3(-(windowSize/1000),-(windowSize/1000),0),StdDraw.WHITE));
+        octree.add(new Body("FancyStarName",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize/3),-(windowSize/5),0),new Vector3((windowSize/1000),-(windowSize/1000),0),StdDraw.PINK));
+        octree.add(new Body("BigNebula",1e10 * windowSize,(1.0/300) * windowSize,new Vector3((windowSize/3),-(windowSize/5),0),new Vector3(-(windowSize/1000),(windowSize/1000),0),StdDraw.YELLOW));
+        octree.add(new Body("DerGroßeWagen",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize-(windowSize/10)),-(windowSize-(windowSize/10)),0),new Vector3((windowSize/2000),(windowSize/2000),0),StdDraw.ORANGE));
     }
-
 
     //helps to make star starting formations less uniform by partitioning in two forms of coordinate-generation
     private static Vector3 randomizeClusters(){
@@ -142,16 +136,16 @@ public class Simulation {
     }
 
     //calculates forces for each body according to barnes hut algorithm
-    public static void calcForces(Octree oct){
-        for (int i = 0; i < bodyArray.length; i++) {
-            oct.calculate(bodyArray[i]);
+    public static void calcForces(){
+        for (Body body : octree) {
+            octree.calculate(body);
         }
     }
 
     //moves the bodies according to the newly calculated movement-vecor
     public static void moveBodies(){
-        for (int i = 0; i < bodyArray.length; i++) {
-            bodyArray[i].move();
+        for (Body body : octree) {
+            body.move();
         }
     }
 
@@ -165,8 +159,8 @@ public class Simulation {
     //draws the new sky-formation
     public static void drawSky(){
         StdDraw.clear(StdDraw.BLACK);
-        for (int i = 0; i < bodyArray.length; i++) {
-            bodyArray[i].draw();
+        for (Body body: octree) {
+            body.draw();
         }
         StdDraw.show();
     }

@@ -112,51 +112,42 @@ public class InnerNode implements TreeNode {
     }
 
     private class InnerIterator implements BodyIterator{
-        private TreeNode parent;
-        private TreeNode node;
-        private BodyIterator iter;
-        private int pointer = 0;
-        private int countChildren = 0;
+        private InnerNode node;
+        private BodyIterator[] iter;
+        private int currentNodeIndex = 0;
 
-        public InnerIterator(TreeNode t) {
+        public InnerIterator(InnerNode t) {
             node = t;
-            parent = ((InnerNode)node).parent();
-            while(((InnerNode)node).getChild(pointer) == null && pointer < 7){
-                pointer++;
-            }
-            iter = ((InnerNode)node).getChild(pointer).iterator();
+            iter = new BodyIterator[8];
             for (int i = 0; i < 8; i++) {
-                if(((InnerNode)node).getChild(i) != null){
-                    countChildren++;
+                TreeNode child = node.getChild(i);
+                if (child != null) {
+                    iter[i] = child.iterator();
                 }
+            }
+            if (iter[currentNodeIndex] == null){
+                setNextNodeIndex();
+            }
+        }
+
+        public void setNextNodeIndex(){
+            while (currentNodeIndex < 8 && iter[currentNodeIndex] == null){
+                currentNodeIndex++;
             }
         }
 
         @Override
         public boolean hasNext() {
-            return countChildren!=0;
+            return currentNodeIndex < 8;
         }
 
         public Body next(){
-            Body next = iter.next();
-            if(!iter.hasNext()){
-                pointer++;
-                while(((InnerNode)node).getChild(pointer) == null && pointer < 8){
-                    pointer++;
-                }
-                countChildren--;
-                if(pointer < 8){
-                    iter = ((InnerNode)node).getChild(pointer).iterator();
-                    next = iter.next();
-                }else{
-                    if(parent != null){
-                        return parent.iterator().next();
-                    }else{
-                        countChildren = 0;
-                    }
-                }
+            Body body = iter[currentNodeIndex].next();
+            if (!iter[currentNodeIndex].hasNext()){
+                currentNodeIndex++;
+                setNextNodeIndex();
             }
-            return next;
+            return body;
         }
     }
 }
