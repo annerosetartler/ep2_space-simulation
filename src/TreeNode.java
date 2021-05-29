@@ -1,4 +1,4 @@
-public interface TreeNode {
+public interface TreeNode extends BodyIterable{
 
     // Adds a body in the Octree
     boolean add(Body b);

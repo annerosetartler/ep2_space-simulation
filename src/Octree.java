@@ -1,4 +1,4 @@
-public class Octree {
+public class Octree implements BodyIterable{
 
     private String name;
     private TreeNode root;
@@ -41,4 +41,12 @@ public class Octree {
         root = null;
     }
 
+    @Override
+    public BodyIterator iterator() {
+        if(root == null){
+            return null;
+        }else{
+           return root.iterator();
+        }
+    }
 }
