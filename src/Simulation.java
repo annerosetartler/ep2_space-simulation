@@ -24,44 +24,12 @@ public class Simulation {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter the number of bodies as integer: ");
-        boolean flag = true;
-        while (flag){
-            if(input.hasNextInt()){
-                numberOfBodies = input.nextInt();
-                if(numberOfBodies >= 5 && numberOfBodies <= 11000){
-                    flag = false;
-                    break;
-                }else{
-                    System.out.println("Please choose a number from 5 to 11000.");
-                }
-            }else {
-                String typedIn = input.next();
-                System.out.println("Wrong Input type: " + typedIn);
-            }
-        }
-        System.out.println("Please enter T as double: ");
-        flag = true;
-        while (flag){
-            if(input.hasNext()){
-                if (input.hasNextDouble()) {
-                    T = input.nextDouble();
-                    if(T >= 0.0 && T <= 1.0){
-                        flag = false;
-                        input.close();
-                        break;
-                    }else{
-                        System.out.println("T has to be in [0,1].");
-                    }
-                } else {
-                    String typedIn = input.next();
-                    System.out.println("Wrong Input type: " + typedIn);
-                }
-            }
-        }
-        System.out.println(starSlogan());
-        System.out.println("number of bodies: " + numberOfBodies);
-        System.out.println("T: " + T);
+
+        readNumberOfBodies(input);
+
+        readTInput(input);
+
+        printOutput();
 
         octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
@@ -80,6 +48,53 @@ public class Simulation {
             ticker++;
         }
 
+    }
+
+    private static void readNumberOfBodies(Scanner input){
+        System.out.println("Please enter the number of bodies as integer: ");
+        boolean flag = true;
+        while (flag){
+            if(input.hasNextInt()){
+                numberOfBodies = input.nextInt();
+                if(numberOfBodies >= 5 && numberOfBodies <= 11000){
+                    flag = false;
+                    break;
+                }else{
+                    System.out.println("Please choose a number from 5 to 11000.");
+                }
+            }else {
+                String typedIn = input.next();
+                System.out.println("Wrong Input type: " + typedIn);
+            }
+        }
+    }
+
+    private static void readTInput(Scanner input){
+        System.out.println("Please enter T as double: ");
+        boolean flag = true;
+        while (flag){
+            if(input.hasNext()){
+                if (input.hasNextDouble()) {
+                    T = input.nextDouble();
+                    if(T >= 0.0 && T <= 1.0){
+                        flag = false;
+                        input.close();
+                        break;
+                    }else{
+                        System.out.println("T has to be in [0,1].");
+                    }
+                } else {
+                    String typedIn = input.next();
+                    System.out.println("Wrong Input type: " + typedIn);
+                }
+            }
+        }
+    }
+
+    private static void printOutput(){
+        System.out.println(" ****************************************\n" + starSlogan() + "\n ****************************************\n");
+        System.out.println("number of bodies: " + numberOfBodies);
+        System.out.println("T: " + T);
     }
 
     //sets up StdDraw window and star starting points
