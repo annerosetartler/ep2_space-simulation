@@ -1,25 +1,16 @@
+// represents a node without children and containing a body
 public class LeafNode implements TreeNode {
 
     private Body body;
     private InnerNode parent;
     private Octant octant;
-    private int childID;//to know which child this leaf is to its parent, ersparen uns so noch einen Vergleich in Octant
-    private double length;
+    private int childID;//to know which child this leaf is to its parent
 
     public LeafNode(Octant o, Body b, InnerNode p, int i){
         octant = o;
         body = b;
         parent = p;
         childID = i;
-        length = o.getLength();
-    }
-
-    public Vector3 getMassCenter(){
-        return body.getMassCenter();
-    }
-
-    public double getMass(){
-        return body.getMass();
     }
 
     //returns this body
@@ -33,8 +24,8 @@ public class LeafNode implements TreeNode {
         return body.gravitationalForce(this.body);
     }
 
-    //adds body b by storing the body in this leave node, then adding a inner node at the place of this LeafNode and
-    //subsiquently adding the saved body and body b into the tree again
+    //adds body b by storing the body in this leaf node, then adding a inner node at the place of this LeafNode and
+    //subsequently adding the saved body and body b into the tree again
     public boolean add(Body b){
         if (parent == null){
             return false;
@@ -51,6 +42,7 @@ public class LeafNode implements TreeNode {
         return body.toString();
     }
 
+    //returns a BodyIterator of the dynamic type LeafIterator
     @Override
     public BodyIterator iterator() {
         return new LeafIterator(body);
@@ -65,11 +57,13 @@ public class LeafNode implements TreeNode {
             flag = true;
         }
 
+        // returns true if next() has not been used yet
         @Override
         public boolean hasNext() {
             return flag;
         }
 
+        // returns the current body and closes iterator by setting flag = false
         public Body next(){
             if(flag){
                 flag = false;

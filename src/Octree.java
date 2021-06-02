@@ -9,7 +9,8 @@ public class Octree implements BodyIterable{
         octant = new Octant(xmin,xmax,ymin,ymax,zmin,zmax);
     }
 
-    //adds a body to the octree
+    // adds a body to the octree if the position is still available
+    // otherwise false is returned
     public boolean add(Body b){
         if(!octant.contains(b.getMassCenter())){
             return false;
@@ -36,11 +37,7 @@ public class Octree implements BodyIterable{
         body.setForce(root.calculate(body));
     }
 
-    // Resets Octree by removing the root reference
-    public void reset(){
-        root = null;
-    }
-
+    // generates an iterator for iterating over the leaves of the octree
     @Override
     public BodyIterator iterator() {
         if(root == null){

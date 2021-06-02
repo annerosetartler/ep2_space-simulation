@@ -1,3 +1,4 @@
+// interface for the different types of iterators used in the octree
 public interface BodyIterator extends java.util.Iterator<Body> {
 
         // Returns 'true' if the iteration has more elements.

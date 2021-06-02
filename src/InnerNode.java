@@ -1,3 +1,4 @@
+// represents a node with at least one child
 public class InnerNode implements TreeNode {
 
     private TreeNode[] child = new TreeNode[8];//nwTop, noTop, soTop, swTop, nwBottom, noBottom, soBottom, swBottom;
@@ -15,26 +16,7 @@ public class InnerNode implements TreeNode {
         MassCenter = new Vector3();
     }
 
-    public InnerNode(Octant c, InnerNode p, double m, Vector3 v) {
-        octant = c;
-        parent = p;
-        length = c.getLength();
-        mass = m;
-        MassCenter = v;
-    }
-
-    public Vector3 getMassCenter() {
-        return MassCenter;
-    }
-
-    public double getMass() {
-        return mass;
-    }
-
-    public double getLength() {
-        return octant.getLength();
-    }
-
+    // returns null as it doesn't contain a body itself
     public Body getBody() {
         return null;
     }
@@ -56,10 +38,6 @@ public class InnerNode implements TreeNode {
         }
 
         return calculateVector;
-    }
-
-    public InnerNode parent() {
-        return parent;
     }
 
     //sets child at index i
@@ -106,6 +84,7 @@ public class InnerNode implements TreeNode {
     }
 
 
+    //returns a BodyIterator of the dynamic type InnerIterator
     @Override
     public BodyIterator iterator() {
         return new InnerIterator(this);
@@ -130,17 +109,21 @@ public class InnerNode implements TreeNode {
             }
         }
 
+        // sets currentNodeIndex to the next index that is not null
+        // stops at currentNodeIndex = 8 if there is no more entry left
         public void setNextNodeIndex(){
             while (currentNodeIndex < 8 && iter[currentNodeIndex] == null){
                 currentNodeIndex++;
             }
         }
 
+        // returns true as long as currentNodeIndex is a valid index
         @Override
         public boolean hasNext() {
             return currentNodeIndex < 8;
         }
 
+        // returns the body of the next unused child in the order of the childarray (from index 0 to 7)
         public Body next(){
             Body body = iter[currentNodeIndex].next();
             if (!iter[currentNodeIndex].hasNext()){

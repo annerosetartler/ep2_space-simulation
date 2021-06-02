@@ -1,3 +1,4 @@
+// represents an octant in 3D space
 public class Octant {
 
     private double xmin, xmax, ymin, ymax, zmin, zmax;
@@ -40,7 +41,7 @@ public class Octant {
         return octants;
     }
 
-    // Returns a readable representation of the information of this Octant:
+    // returns a readable representation of the information of this Octant:
     //Octant: xmin, xmax, ymin, ymax, zmin, zmax
     public String toString(){
         return "Octant: " + xmin +", "+ xmax +", "+  ymin +", "+  ymax +", "+  zmin +", "+ zmax;

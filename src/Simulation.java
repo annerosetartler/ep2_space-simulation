@@ -7,18 +7,15 @@ public class Simulation {
     // gravitational constant
     public static final double G = 6.6743e-11;
 
-    private static int numberOfBodies = 10000;
+    private static int numberOfBodies = 10000; //changeable by Scanner input in main
     private static final double windowSize = 500;
     private static int minMass = 100;
     private static Random random = new Random();
     private static final double spreader = 0.8;//a value between 0 and 1 (not 0)
-    private static final Color[] colorArray = {StdDraw.WHITE, StdDraw.BLUE, StdDraw.GREEN, StdDraw.PRINCETON_ORANGE, StdDraw.BOOK_LIGHT_BLUE, StdDraw.BOOK_RED};
+    private static final Color[] colorArray = {StdDraw.WHITE, StdDraw.CYAN, StdDraw.GREEN, StdDraw.PRINCETON_ORANGE, StdDraw.BOOK_LIGHT_BLUE, StdDraw.BOOK_RED};
     private static int currentTextColor = 0;
     private static int ticker = 0;
-    //T
-    public static double T = 0;
-    // one astronomical unit (AU) is the average distance of earth to the sun.
-    public static final double AU = 150e9;
+    public static double T = 0; //changeable by Scanner input in main
 
     public static Octree octree;
 
@@ -31,36 +28,40 @@ public class Simulation {
 
         printOutput();
 
-        octree = new Octree("test1",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
+        octree = new Octree("starShow",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
         setUp();
 
         while (true){
+            try{
+                calcForces();
 
-            calcForces();
+                moveBodies();
 
-            moveBodies();
+                drawSky();
 
-            drawSky();
+                buildTree();
 
-            buildTree();
-
-            ticker++;
+                ticker++;
+            }catch(NullPointerException e){
+                System.out.println("Hope you enjoyed the show! Good night! :)");
+                break;
+            }
         }
-
     }
 
+    // changes numberOfBodies according to input of user using a Scanner
     private static void readNumberOfBodies(Scanner input){
         System.out.println("Please enter the number of bodies as integer: ");
         boolean flag = true;
         while (flag){
             if(input.hasNextInt()){
                 numberOfBodies = input.nextInt();
-                if(numberOfBodies >= 5 && numberOfBodies <= 11000){
+                if(numberOfBodies >= 0 && numberOfBodies <= 11000){
                     flag = false;
                     break;
                 }else{
-                    System.out.println("Please choose a number from 5 to 11000.");
+                    System.out.println("Please choose a number from 0 to 11000.");
                 }
             }else {
                 String typedIn = input.next();
@@ -69,6 +70,7 @@ public class Simulation {
         }
     }
 
+    // changes T according to input of user using a Scanner
     private static void readTInput(Scanner input){
         System.out.println("Please enter T as double: ");
         boolean flag = true;
@@ -91,9 +93,11 @@ public class Simulation {
         }
     }
 
+    // prints out a cute star slogan, the currently used T and number of overall bodies used in the simulation
     private static void printOutput(){
         System.out.println(" ****************************************\n" + starSlogan() + "\n ****************************************\n");
-        System.out.println("number of bodies: " + numberOfBodies);
+        int numBodies = numberOfBodies + 4;
+        System.out.println("number of bodies: " + numBodies);
         System.out.println("T: " + T);
     }
 
@@ -117,7 +121,8 @@ public class Simulation {
         }
     }
 
-    //adds big stars to make movement more interesting/less even (written over some already randomly created stars in array)
+    //adds big stars to make movement more interesting/less even
+    //always part of the simulation
     public static void createBigStars(){
         octree.add(new Body("AlphaCentauris",1e10  * windowSize,(1.0/300) * windowSize,new Vector3(0,(windowSize/3),0),new Vector3(-(windowSize/1000),-(windowSize/1000),0),StdDraw.WHITE));
         octree.add(new Body("FancyStarName",1e10 * windowSize,(1.0/300) * windowSize,new Vector3(-(windowSize/3),-(windowSize/5),0),new Vector3((windowSize/1000),-(windowSize/1000),0),StdDraw.PINK));
@@ -160,7 +165,7 @@ public class Simulation {
         }
     }
 
-    //moves the bodies according to the newly calculated movement-vecor
+    //moves the bodies according to the newly calculated movement-vector
     public static void moveBodies(){
         for (Body body : octree) {
             body.move();
@@ -193,6 +198,7 @@ public class Simulation {
         StdDraw.show();
     }
 
+    // randomly chooses one of 10 cute star slogans
     public static String starSlogan(){
         int rando = random.nextInt(10);
         String slogan = "";
