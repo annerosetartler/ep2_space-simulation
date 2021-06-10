@@ -24,6 +24,11 @@ public class LeafNode implements TreeNode {
         return body.gravitationalForce(this.body);
     }
 
+    @Override
+    public int getDepth() {
+        return 1;
+    }
+
     //adds body b by storing the body in this leaf node, then adding a inner node at the place of this LeafNode and
     //subsequently adding the saved body and body b into the tree again
     public boolean add(Body b){

@@ -44,6 +44,17 @@ public class InnerNode implements TreeNode {
         return calculateVector;
     }
 
+    @Override
+    public int getDepth() {
+        int[] depths = new int[8];
+        for (int i = 0; i < child.length; i++) {
+            if (child[i] != null){
+                depths[i] = child[i].getDepth();
+            }
+        }
+        return Math.max(Math.max(Math.max(depths[0],depths[1]),Math.max(depths[2],depths[3])),Math.max(Math.max(depths[4],depths[5]),Math.max(depths[6],depths[7])))+1;
+    }
+
     //sets child at index i
     public void setChild(int i, InnerNode innerN) {
         child[i] = innerN;

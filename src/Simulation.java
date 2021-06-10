@@ -34,6 +34,8 @@ public class Simulation {
 
         while (true){
             try{
+                System.out.println(octree.getDepth());
+
                 calcForces();
 
                 moveBodies();

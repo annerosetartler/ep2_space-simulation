@@ -37,6 +37,14 @@ public class Octree implements BodyIterable{
         body.setForce(root.calculate(body));
     }
 
+    public int getDepth(){
+        if(root == null){
+            return 0;
+        }else{
+            return root.getDepth();
+        }
+    }
+
     // generates an iterator for iterating over the leaves of the octree
     @Override
     public BodyIterator iterator() {
