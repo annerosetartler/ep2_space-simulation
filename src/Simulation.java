@@ -30,7 +30,9 @@ public class Simulation {
 
         octree = new Octree("starShow",-windowSize,windowSize,-windowSize,windowSize,-windowSize,windowSize);
 
+        //there are always 4 bodies in the simulation plus the ones the user added through the scanner
         setUp();
+
 
         while (true){
             try{
