@@ -24,8 +24,12 @@ public class InnerNode implements TreeNode {
     //calculates force excerted on body by this InnerNode
     @Override
     public Vector3 calculate(Body body) {
-
+        /*
         if ((MassCenter.distanceTo(body.getMassCenter())) / length > (Simulation.T == 0 ? 0 : 1 / Simulation.T)) {
+            return body.gravitationalForce(MassCenter, mass);
+        }
+        */
+        if (length/(MassCenter.distanceTo(body.getMassCenter())) < Simulation.T) {
             return body.gravitationalForce(MassCenter, mass);
         }
 
@@ -82,7 +86,6 @@ public class InnerNode implements TreeNode {
     public String toString(){
         return octant.toString();
     }
-
 
     //returns a BodyIterator of the dynamic type InnerIterator
     @Override
